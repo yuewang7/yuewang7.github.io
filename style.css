@@ -128,15 +128,15 @@ body {
 
 .experience-section {
     margin-top: 60px;
-    text-align: left;
-    padding: 0 20px;
+    width: 100%;
 }
 
 .experience-section h2 {
     color: #1a237e;
-    margin-bottom: 20px;
+    margin: 40px 0 20px 0;
     border-bottom: 2px solid #eee;
     padding-bottom: 10px;
+    text-align: left;
 }
 
 .timeline {
@@ -147,11 +147,10 @@ body {
 }
 
 .timeline-item {
-    margin-bottom: 20px;
-    position: relative;
-    padding: 20px;
     background: #f8f9fa;
+    padding: 20px;
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .timeline-item::before {
@@ -181,17 +180,19 @@ body {
 }
 
 .company-logos {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 30px;
     margin: 40px 0;
     padding: 20px 0;
-    flex-wrap: nowrap; /* 防止换行 */
+    border-top: 1px solid #eee;
+}
 }
 
 .logo {
-    width: 50px; /* 减小宽度确保一行显示 */
+    width: 50px;
     height: 50px;
     object-fit: contain;
     transition: transform 0.3s ease;
@@ -224,21 +225,12 @@ body {
 
 
 
-@media (max-width: 1200px) {
-    .container {
+@media (max-width: 768px) {
+    .work-grid,
+    .education-grid,
+    .project-grid {
         grid-template-columns: 1fr;
     }
-    
-    .tag-cloud-left, .tag-cloud-right {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .profile-container {
-        padding: 20px;
-    }
-
     .company-logos {
         flex-wrap: wrap;
     }
