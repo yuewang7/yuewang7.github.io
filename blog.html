@@ -10,18 +10,17 @@
     <script src="blog.js" defer></script>
 </head>
 <body>
-    <div class="navbar">
+    <nav class="navbar">
         <div class="nav-content">
-            <a href="index.html">首页</a>
-            <a href="blog.html" class="active">博客</a>
-            <a href="Music">音乐</a>
-            <!-- 如有其他导航链接，可以在此添加 -->
+            <a href="index.html" class="active">Homepage</a>
+            <a href="blog.html">Yue's blog</a>
+            <a href="Music.html">Yue as a music lover!</a>
         </div>
-    </div>
+    </nav>
 
     <div class="blog-container">
         <div class="blog-header">
-            <h1 id="page-title">博客</h1>
+            <h1 id="page-title">Yue's Blog</h1>
             <div class="language-switch" onclick="toggleLanguage()">
                 <div class="language-indicator"></div>
                 <span id="language-text">中 / EN</span>
@@ -64,7 +63,10 @@
                 </div>
                 
                 <div class="blog-tags">
-                    <span class="blog-tag tag-ai">AI</span>
+                    <!-- 使用class而不是id来标识标签文本 -->
+                    <span class="blog-tag tag-ai">
+                        <span class="tag-text-ai">AI</span>
+                    </span>
                 </div>
                 
                 <p class="blog-subtitle">
@@ -90,8 +92,12 @@
                 </div>
                 
                 <div class="blog-tags">
-                    <span class="blog-tag tag-jobhunting">求职</span>
-                    <span class="blog-tag tag-personal-growth">个人成长</span>
+                    <span class="blog-tag tag-jobhunting">
+                        <span class="tag-text-jobhunting">求职</span>
+                    </span>
+                    <span class="blog-tag tag-personal-growth">
+                        <span class="tag-text-personal-growth">个人成长</span>
+                    </span>
                 </div>
                 
                 <p class="blog-subtitle">
@@ -116,10 +122,11 @@
                 </div>
                 
                 <div class="blog-tags">
-                    <span class="blog-tag tag-gaming">游戏</span>
-                    <span class="blog-tag tag-ai">AI</span>
+                    <!-- 使用class而不是id来标识标签文本 -->
+                    <span class="blog-tag tag-gaming">
+                        <span class="tag-text-gaming">Gaming</span>
+                    </span>
                 </div>
-                
                 <p class="blog-subtitle">
                     <span id="blog-subtitle-3-en">Why I am always obsessed with RPG games</span>
                     <span id="blog-subtitle-3-zh" style="display: none;">同一风格的恐怖RPG解谜感觉我可以一直玩下去！</span>
@@ -133,10 +140,7 @@
         
         <div class="pagination">
             <div class="pagination-container">
-                <div class="page-btn active">1</div>
-                <div class="page-btn">2</div>
-                <div class="page-btn">3</div>
-                <div class="page-btn next" id="next-page-btn">下一页</div>
+                <!-- 分页按钮将在这里动态生成 -->
             </div>
         </div>
     </div>

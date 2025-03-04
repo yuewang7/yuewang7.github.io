@@ -1,8 +1,8 @@
 // 翻译数据
 const translations = {
     'zh': {
-        'pageTitle': '博客',
-        'tagsLabel': '标签：',
+        'pageTitle': 'Yue’s Blog',
+        'tagsLabel': '文章标签：',
         'searchPlaceholder': '搜索博客文章...',
         'searchButton': '搜索',
         'blogListTitle': '所有文章',
@@ -16,7 +16,7 @@ const translations = {
         }
     },
     'en': {
-        'pageTitle': 'Blog',
+        'pageTitle': 'Yue‘s Blog',
         'tagsLabel': 'Tags:',
         'searchPlaceholder': 'Search blog posts...',
         'searchButton': 'Search',
@@ -27,13 +27,13 @@ const translations = {
             'ai': 'AI',
             'jobhunting': 'Job Hunting',
             'gaming': 'Gaming',
-            'personal-growth': 'Personal Growth'
+            'personal-growth': 'Career Development'
         }
     }
 };
 
 // 当前语言
-let currentLang = 'zh'; // 默认为中文
+let currentLang = 'en'; // 默认为英文
 
 // 切换语言
 function toggleLanguage() {
@@ -59,7 +59,13 @@ function updateLanguage() {
             element.textContent = translations[currentLang].tags[tag];
         }
     });
-    
+    // 更新博客文章中的标签文本
+    Object.keys(translations[currentLang].tags).forEach(tag => {
+        document.querySelectorAll(`.tag-text-${tag}`).forEach(element => {
+        element.textContent = translations[currentLang].tags[tag];
+        });
+    });
+
     // 更新博客标题和副标题
     document.querySelectorAll('[id^="blog-title-"]').forEach(element => {
         if (element.id.endsWith(`-${currentLang}`)) {
@@ -77,8 +83,114 @@ function updateLanguage() {
         }
     });
 }
+// 分页相关变量
+const itemsPerPage = 5; // 每页显示5篇文章
+let currentPage = 1; // 当前页码
+let totalFilteredItems = 0; // 筛选后的总文章数
 
-// 按标签筛选
+// 初始化分页
+function initPagination() {
+    const blogItems = document.querySelectorAll('.blog-item');
+    totalFilteredItems = blogItems.length;
+    
+    // 计算总页数
+    const totalPages = Math.ceil(totalFilteredItems / itemsPerPage);
+    
+    // 更新分页UI
+    updatePaginationUI(totalPages);
+    
+    // 显示第一页内容
+    showPage(1);
+}
+
+// 更新分页UI
+function updatePaginationUI(totalPages) {
+    const paginationContainer = document.querySelector('.pagination-container');
+    paginationContainer.innerHTML = '';
+    
+    // 如果只有一页，不显示分页
+    if (totalPages <= 1) {
+        document.querySelector('.pagination').style.display = 'none';
+        return;
+    } else {
+        document.querySelector('.pagination').style.display = 'flex';
+    }
+    
+    // 创建页码按钮
+    for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('div');
+        pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+        pageBtn.textContent = i;
+        pageBtn.addEventListener('click', () => {
+            showPage(i);
+        });
+        paginationContainer.appendChild(pageBtn);
+    }
+    
+    // 如果有多于一页，添加"下一页"按钮
+    if (totalPages > 1) {
+        const nextBtn = document.createElement('div');
+        nextBtn.className = 'page-btn next';
+        nextBtn.id = 'next-page-btn';
+        nextBtn.textContent = translations[currentLang].nextPage;
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        paginationContainer.appendChild(nextBtn);
+    }
+}
+
+// 显示指定页码的内容
+function showPage(pageNum) {
+    // 获取所有可见的博客项（可能已经被筛选）
+    const blogItems = Array.from(document.querySelectorAll('.blog-item'))
+        .filter(item => item.style.display !== 'none');
+    
+    // 计算显示范围
+    const startIndex = (pageNum - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, blogItems.length);
+    
+    // 隐藏所有文章
+    blogItems.forEach((item, index) => {
+        if (index >= startIndex && index < endIndex) {
+            item.style.display = '';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    
+    // 更新当前页码
+    currentPage = pageNum;
+    
+    // 更新分页UI的活动状态
+    document.querySelectorAll('.page-btn').forEach(btn => {
+        if (!btn.classList.contains('next')) {
+            btn.classList.toggle('active', parseInt(btn.textContent) === currentPage);
+        }
+    });
+}
+
+// 筛选后更新分页
+function updatePaginationAfterFilter() {
+    // 获取筛选后可见的文章
+    const visibleItems = document.querySelectorAll('.blog-item[style=""]');
+    totalFilteredItems = visibleItems.length;
+    
+    // 重新计算页数
+    const totalPages = Math.ceil(totalFilteredItems / itemsPerPage);
+    
+    // 重置到第一页
+    currentPage = 1;
+    
+    // 更新分页UI
+    updatePaginationUI(totalPages);
+    
+    // 显示第一页
+    showPage(1);
+}
+
 function filterByTag(tag) {
     const tagButton = document.getElementById(`tag-${tag}-btn`);
     
@@ -108,9 +220,12 @@ function filterByTag(tag) {
         const tagNames = activeTags.map(tag => translations[currentLang].tags[tag]).join(' + ');
         document.getElementById('blog-list-title').textContent = `${tagNames} 相关文章`;
     }
+    
+    // 更新分页
+    updatePaginationAfterFilter();
 }
 
-// 搜索博客
+// 修改searchBlogs函数以支持分页
 function searchBlogs() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const blogItems = document.querySelectorAll('.blog-item');
@@ -119,6 +234,9 @@ function searchBlogs() {
         // 如果搜索词为空，显示所有项目
         blogItems.forEach(item => item.style.display = '');
         document.getElementById('blog-list-title').textContent = translations[currentLang].blogListTitle;
+        
+        // 更新分页
+        updatePaginationAfterFilter();
         return;
     }
     
@@ -147,7 +265,24 @@ function searchBlogs() {
     if (!found) {
         document.getElementById('blog-list-title').textContent = `没有找到 "${searchTerm}" 的结果`;
     }
+    
+    // 更新分页
+    updatePaginationAfterFilter();
 }
+
+// 页面加载时初始化
+window.onload = function() {
+    updateLanguage();
+    sortBlogsByDate();
+    initPagination(); // 初始化分页
+    
+    // 添加回车键搜索功能
+    document.getElementById('search-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            searchBlogs();
+        }
+    });
+};
 
 // 按发布日期排序博客
 function sortBlogsByDate() {
@@ -165,18 +300,7 @@ function sortBlogsByDate() {
     blogItems.forEach(item => blogList.appendChild(item));
 }
 
-// 页面加载时初始化
-window.onload = function() {
-    updateLanguage();
-    sortBlogsByDate();
-    
-    // 添加回车键搜索功能
-    document.getElementById('search-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            searchBlogs();
-        }
-    });
-};
+
 
 /*
 =====================================================================
