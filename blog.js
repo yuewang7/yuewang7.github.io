@@ -52,27 +52,17 @@ function updateLanguage() {
     document.getElementById('next-page-btn').textContent = translations[currentLang].nextPage;
     document.getElementById('language-text').textContent = translations[currentLang].languageText;
     
-    // 更新标签文本
     Object.keys(translations[currentLang].tags).forEach(tag => {
+        // 更新顶部筛选区域的标签按钮
         const element = document.getElementById(`tag-${tag}-btn`);
         if (element) {
             element.textContent = translations[currentLang].tags[tag];
         }
-    });
-    // 更新博客文章中的标签文本
-    Object.keys(translations[currentLang].tags).forEach(tag => {
+        
+        // 更新博客文章中的标签文本
         document.querySelectorAll(`.tag-text-${tag}`).forEach(element => {
-        element.textContent = translations[currentLang].tags[tag];
+            element.textContent = translations[currentLang].tags[tag];
         });
-    });
-
-    // 更新博客标题和副标题
-    document.querySelectorAll('[id^="blog-title-"]').forEach(element => {
-        if (element.id.endsWith(`-${currentLang}`)) {
-            element.style.display = '';
-        } else {
-            element.style.display = 'none';
-        }
     });
     
     document.querySelectorAll('[id^="blog-subtitle-"]').forEach(element => {
