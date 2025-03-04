@@ -1,0 +1,144 @@
+<link rel="stylesheet" href="style.css">
+<script src="blog.js" defer></script>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yue's Blog</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="blog.js" defer></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-content">
+            <a href="index.html">首页</a>
+            <a href="blog.html" class="active">博客</a>
+            <a href="Music">音乐</a>
+            <!-- 如有其他导航链接，可以在此添加 -->
+        </div>
+    </div>
+
+    <div class="blog-container">
+        <div class="blog-header">
+            <h1 id="page-title">博客</h1>
+            <div class="language-switch" onclick="toggleLanguage()">
+                <div class="language-indicator"></div>
+                <span id="language-text">中 / EN</span>
+            </div>
+        </div>
+        
+        <div class="filter-section">
+            <div class="tags-filter">
+                <h3 id="tags-label">标签：</h3>
+                <!-- 
+                    标签系统：
+                    如需添加新标签，复制下面的按钮元素，并修改相应属性
+                -->
+                <button id="tag-ai-btn" class="tag-btn tag-ai" data-tag="ai" onclick="filterByTag('ai')">AI</button>
+                <button id="tag-jobhunting-btn" class="tag-btn tag-jobhunting" data-tag="jobhunting" onclick="filterByTag('jobhunting')">求职</button>
+                <button id="tag-gaming-btn" class="tag-btn tag-gaming" data-tag="gaming" onclick="filterByTag('gaming')">游戏</button>
+                <button id="tag-personal-growth-btn" class="tag-btn tag-personal-growth" data-tag="personal-growth" onclick="filterByTag('personal-growth')">个人成长</button>
+            </div>
+            
+            <div class="search-area">
+                <input type="text" id="search-input" class="search-input" placeholder="搜索博客文章...">
+                <button id="search-btn" class="search-btn" onclick="searchBlogs()">搜索</button>
+            </div>
+        </div>
+        
+        <h2 id="blog-list-title" class="blog-list-header">All articles</h2>
+        
+        <div id="blog-list" class="blog-list">
+            <!-- 
+                博客文章项：
+                添加新文章时，复制一个blog-item元素并修改内容
+            -->
+            <div class="blog-item" data-tags="ai">
+                <div class="blog-header">
+                    <h3 class="blog-title">
+                        <span id="blog-title-1-en">Beyond Chatbots: Exploring the New Wave of AI Products and What's Coming Next</span>
+                        <span id="blog-title-1-zh" style="display: none;">chatbot之外，做AI产品我想探索的更多可能性</span>
+                    </h3>
+                    <span class="blog-date">2025-03-02</span>
+                </div>
+                
+                <div class="blog-tags">
+                    <span class="blog-tag tag-ai">AI</span>
+                </div>
+                
+                <p class="blog-subtitle">
+                    <span id="blog-subtitle-1-en">Reflections on Exploring Various AI Products Recently</span>
+                    <span id="blog-subtitle-1-zh" style="display: none;">近期探索各类AI产品的思考与感悟</span>
+                </p>
+                
+                <div class="blog-links">
+                    <!-- 替换为实际的链接地址 -->
+                    <a href="https://yueniverse.substack.com/p/beyond-chatbots-exploring-the-new" class="blog-link" target="_blank">English</a>
+                    <a href="https://nthnbvhgco.feishu.cn/docx/Fgg0d5WJtolpQpxZOZ6cMG5mn0g?from=from_copylink" class="blog-link" target="_blank">中文</a>
+                </div>
+            </div>
+            
+            <!-- 示例文章2 -->
+            <div class="blog-item" data-tags="jobhunting personal-growth">
+                <div class="blog-header">
+                    <h3 class="blog-title">
+                        <span id="blog-title-2-en">International PM candidate's job hunting journey: what do I learn and plan to do next</span>
+                        <span id="blog-title-2-zh" style="display: none;">写给所有和我一样在美国找工的PM</span>
+                    </h3>
+                    <span class="blog-date">2025-02-28</span>
+                </div>
+                
+                <div class="blog-tags">
+                    <span class="blog-tag tag-jobhunting">求职</span>
+                    <span class="blog-tag tag-personal-growth">个人成长</span>
+                </div>
+                
+                <p class="blog-subtitle">
+                    <span id="blog-subtitle-2-en">Navigating uncertainty, overcoming setbacks, and finding agency in the job search journey -- What I learnt in my 2 month full-time jobhunting after graduation</span>
+                    <span id="blog-subtitle-2-zh" style="display: none;">毕业后在美国全职找工作的两个月，我的一些思考</span>
+                </p>
+                
+                <div class="blog-links">
+                    <a href="https://yueniverse.substack.com/p/international-pm-candidates-job-hunting?r=39drsj" class="blog-link" target="_blank">English</a>
+                    <a href="https://nthnbvhgco.feishu.cn/docx/Lypwd3P80ovLZBxAhaxct63Ynnf?from=from_copylink" class="blog-link" target="_blank">中文</a>
+                </div>
+            </div>
+            
+            <!-- 示例文章3 -->
+            <div class="blog-item" data-tags="gaming ai">
+                <div class="blog-header">
+                    <h3 class="blog-title">
+                        <span id="blog-title-3-en">Recent Gaming Experiences and Reflections (The IB Art Museum)</span>
+                        <span id="blog-title-3-zh" style="display: none;">近期游戏玩后感-IB恐怖美术馆</span>
+                    </h3>
+                    <span class="blog-date">2024-08-16</span>
+                </div>
+                
+                <div class="blog-tags">
+                    <span class="blog-tag tag-gaming">游戏</span>
+                    <span class="blog-tag tag-ai">AI</span>
+                </div>
+                
+                <p class="blog-subtitle">
+                    <span id="blog-subtitle-3-en">Why I am always obsessed with RPG games</span>
+                    <span id="blog-subtitle-3-zh" style="display: none;">同一风格的恐怖RPG解谜感觉我可以一直玩下去！</span>
+                </p>
+                
+                <div class="blog-links">
+                    <a href="https://yueniverse.substack.com/p/recent-gaming-experiences-and-reflections" class="blog-link" target="_blank">English</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <div class="pagination-container">
+                <div class="page-btn active">1</div>
+                <div class="page-btn">2</div>
+                <div class="page-btn">3</div>
+                <div class="page-btn next" id="next-page-btn">下一页</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
