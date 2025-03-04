@@ -49,30 +49,67 @@ function updateLanguage() {
     document.getElementById('search-input').placeholder = translations[currentLang].searchPlaceholder;
     document.getElementById('search-btn').textContent = translations[currentLang].searchButton;
     document.getElementById('blog-list-title').textContent = translations[currentLang].blogListTitle;
-    document.getElementById('next-page-btn').textContent = translations[currentLang].nextPage;
+    
+    // 下一页按钮可能在初始化前不存在
+    const nextPageBtn = document.getElementById('next-page-btn');
+    if (nextPageBtn) {
+        nextPageBtn.textContent = translations[currentLang].nextPage;
+    }
+    
     document.getElementById('language-text').textContent = translations[currentLang].languageText;
     
+    // 更新所有标签按钮
     Object.keys(translations[currentLang].tags).forEach(tag => {
-        // 更新顶部筛选区域的标签按钮
-        const element = document.getElementById(`tag-${tag}-btn`);
-        if (element) {
-            element.textContent = translations[currentLang].tags[tag];
+        const tagButton = document.getElementById(`tag-${tag}-btn`);
+        if (tagButton) {
+            tagButton.textContent = translations[currentLang].tags[tag];
         }
-        
-        // 更新博客文章中的标签文本
+    });
+    
+    // 更新文章中的标签文本 - 使用两种选择器来确保兼容性
+    Object.keys(translations[currentLang].tags).forEach(tag => {
+        // 方法1：直接使用类选择器
         document.querySelectorAll(`.tag-text-${tag}`).forEach(element => {
             element.textContent = translations[currentLang].tags[tag];
         });
     });
     
+    // 方法2：更通用的标签选择器
+    document.querySelectorAll('.blog-tag').forEach(tagElement => {
+        // 从类名中提取标签类型
+        const tagClasses = Array.from(tagElement.classList);
+        // 查找形如 tag-ai, tag-gaming 的类
+        const tagClass = tagClasses.find(cls => cls.startsWith('tag-') && cls !== 'blog-tag');
+        
+        if (tagClass) {
+            const tagType = tagClass.replace('tag-', '');
+            
+            // 找到标签内的文本元素
+            const textElement = tagElement.querySelector('span');
+            if (textElement && translations[currentLang].tags[tagType]) {
+                textElement.textContent = translations[currentLang].tags[tagType];
+            }
+        }
+    });
+    
+    // 切换博客标题和副标题的显示
+    document.querySelectorAll('[id^="blog-title-"]').forEach(element => {
+        const idParts = element.id.split('-');
+        if (idParts.length >= 3) {
+            const lang = idParts[idParts.length - 1]; // 获取ID最后部分作为语言
+            element.style.display = lang === currentLang ? '' : 'none';
+        }
+    });
+    
     document.querySelectorAll('[id^="blog-subtitle-"]').forEach(element => {
-        if (element.id.endsWith(`-${currentLang}`)) {
-            element.style.display = '';
-        } else {
-            element.style.display = 'none';
+        const idParts = element.id.split('-');
+        if (idParts.length >= 3) {
+            const lang = idParts[idParts.length - 1]; // 获取ID最后部分作为语言
+            element.style.display = lang === currentLang ? '' : 'none';
         }
     });
 }
+
 // 分页相关变量
 const itemsPerPage = 5; // 每页显示5篇文章
 let currentPage = 1; // 当前页码
@@ -96,14 +133,22 @@ function initPagination() {
 // 更新分页UI
 function updatePaginationUI(totalPages) {
     const paginationContainer = document.querySelector('.pagination-container');
+    if (!paginationContainer) return;
+    
     paginationContainer.innerHTML = '';
     
     // 如果只有一页，不显示分页
     if (totalPages <= 1) {
-        document.querySelector('.pagination').style.display = 'none';
+        const pagination = document.querySelector('.pagination');
+        if (pagination) {
+            pagination.style.display = 'none';
+        }
         return;
     } else {
-        document.querySelector('.pagination').style.display = 'flex';
+        const pagination = document.querySelector('.pagination');
+        if (pagination) {
+            pagination.style.display = 'flex';
+        }
     }
     
     // 创建页码按钮
@@ -181,8 +226,10 @@ function updatePaginationAfterFilter() {
     showPage(1);
 }
 
+// 不要修改这个函数的签名，它需要与HTML中的onclick属性匹配
 function filterByTag(tag) {
     const tagButton = document.getElementById(`tag-${tag}-btn`);
+    if (!tagButton) return;
     
     // 切换激活状态
     tagButton.classList.toggle('active');
@@ -208,7 +255,7 @@ function filterByTag(tag) {
         
         // 更新标题以反映筛选
         const tagNames = activeTags.map(tag => translations[currentLang].tags[tag]).join(' + ');
-        document.getElementById('blog-list-title').textContent = `${tagNames} 相关文章`;
+        document.getElementById('blog-list-title').textContent = `${tagNames} ${currentLang === 'zh' ? '相关文章' : 'Posts'}`;
     }
     
     // 更新分页
@@ -217,7 +264,10 @@ function filterByTag(tag) {
 
 // 修改searchBlogs函数以支持分页
 function searchBlogs() {
-    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const searchInput = document.getElementById('search-input');
+    if (!searchInput) return;
+    
+    const searchTerm = searchInput.value.toLowerCase();
     const blogItems = document.querySelectorAll('.blog-item');
     
     if (searchTerm.trim() === '') {
@@ -236,11 +286,28 @@ function searchBlogs() {
     // 搜索逻辑
     let found = false;
     blogItems.forEach(item => {
-        const title = item.querySelector('.blog-title').textContent.toLowerCase();
-        const subtitle = item.querySelector('.blog-subtitle').textContent.toLowerCase();
+        // 获取所有标题和副标题元素
+        const titleElements = item.querySelectorAll('.blog-title span');
+        const subtitleElements = item.querySelectorAll('.blog-subtitle span');
         const tags = item.getAttribute('data-tags').toLowerCase();
         
-        if (title.includes(searchTerm) || subtitle.includes(searchTerm) || tags.includes(searchTerm)) {
+        // 检查标题和副标题是否包含搜索词
+        let titleMatch = false;
+        let subtitleMatch = false;
+        
+        titleElements.forEach(title => {
+            if (title.textContent.toLowerCase().includes(searchTerm)) {
+                titleMatch = true;
+            }
+        });
+        
+        subtitleElements.forEach(subtitle => {
+            if (subtitle.textContent.toLowerCase().includes(searchTerm)) {
+                subtitleMatch = true;
+            }
+        });
+        
+        if (titleMatch || subtitleMatch || tags.includes(searchTerm)) {
             item.style.display = '';
             found = true;
         } else {
@@ -249,34 +316,29 @@ function searchBlogs() {
     });
     
     // 更新标题以反映搜索
-    document.getElementById('blog-list-title').textContent = `"${searchTerm}" 的搜索结果`;
+    document.getElementById('blog-list-title').textContent = currentLang === 'zh' ? 
+        `"${searchTerm}" 的搜索结果` : 
+        `Search results for "${searchTerm}"`;
     
     // 如果没有结果，显示提示
     if (!found) {
-        document.getElementById('blog-list-title').textContent = `没有找到 "${searchTerm}" 的结果`;
+        document.getElementById('blog-list-title').textContent = currentLang === 'zh' ? 
+            `没有找到 "${searchTerm}" 的结果` : 
+            `No results found for "${searchTerm}"`;
     }
     
     // 更新分页
     updatePaginationAfterFilter();
 }
 
-// 页面加载时初始化
-window.onload = function() {
-    updateLanguage();
-    sortBlogsByDate();
-    initPagination(); // 初始化分页
-    
-    // 添加回车键搜索功能
-    document.getElementById('search-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            searchBlogs();
-        }
-    });
-};
-
 // 按发布日期排序博客
 function sortBlogsByDate() {
     const blogList = document.getElementById('blog-list');
+    if (!blogList) {
+        console.error("Blog list element not found!");
+        return;
+    }
+    
     const blogItems = Array.from(blogList.querySelectorAll('.blog-item'));
     
     // 按日期排序（从新到旧）
@@ -290,40 +352,22 @@ function sortBlogsByDate() {
     blogItems.forEach(item => blogList.appendChild(item));
 }
 
-
-
-/*
-=====================================================================
-                        使用指南
-=====================================================================
-
-1. 添加新标签：
-   - 在HTML中复制现有标签按钮，并修改以下属性：
-     * id: 确保唯一（例如：tag-newtag-btn）
-     * class: 添加颜色类（例如：tag-newtag）
-     * data-tag: 设置标签标识符（例如：newtag）
-     * onclick: 保持一致（例如：filterByTag('newtag')）
-   - 在CSS中添加新标签的颜色样式：
-     .tag-newtag { ... }
-   - 在translations对象中添加中英文翻译:
-     'zh': { 'tags': { 'newtag': '新标签' } }
-     'en': { 'tags': { 'newtag': 'New Tag' } }
-
-2. 添加新博客文章：
-   - 复制现有的.blog-item元素
-   - 更新以下内容：
-     * data-tags: 设置相关标签（空格分隔）
-     * blog-title-X-en/zh: 设置英文和中文标题（X是递增的数字）
-     * blog-date: 设置发布日期（格式：YYYY-MM-DD）
-     * blog-subtitle-X-en/zh: 设置英文和中文副标题
-     * 添加或删除相关标签span元素
-     * 更新两个链接的href属性为实际链接
-
-3. 修改文章：
-   - 直接更新相应的标题、副标题、日期或链接元素
-   - 要更改关联的标签，修改data-tags属性和标签span元素
-
-4. 添加新语言（如果需要）：
-   - 在translations对象中添加新语言条目
-   - 修改toggleLanguage()函数以支持多语言循环
-*/
+// 页面加载时初始化 - 这是关键部分
+window.onload = function() {
+    console.log("Page loaded, initializing...");
+    
+    // 仅设置语言，不修改已有的onclick事件
+    updateLanguage();
+    sortBlogsByDate();
+    initPagination(); // 初始化分页
+    
+    // 添加回车键搜索功能
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchBlogs();
+            }
+        });
+    }
+};

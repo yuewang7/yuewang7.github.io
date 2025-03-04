@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabs I Made</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+        }
+        
+        /* Navigation Bar Styles */
+        .navbar {
+            background-color: #2c3e50;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-content a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-content a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-content a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+        }
+        
+        /* Main Content Styles */
+        .page-content {
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        header {
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .header-desc {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            max-width: 900px;
+            margin: 0 0 20px;
+            line-height: 1.6;
+            text-align: left;
+        }
+        
+        .bilibili-link-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .bilibili-link {
+            display: inline-block;
+        }
+        
+        .bilibili-logo {
+            width: 100px;
+            height: 80px;
+            transition: transform 0.3s;
+        }
+        
+        .bilibili-logo:hover {
+            transform: scale(1.1);
+        }
+        
+        .search-container {
+            margin-bottom: 25px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .tags-container {
+            margin-bottom: 25px;
+        }
+        
+        .tag {
+            display: inline-block;
+            background-color: #e0e0e0;
+            color: #333;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 0 8px 8px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .tag:hover, .tag.active {
+            background-color: #2c3e50;
+            color: white;
+        }
+        
+        .music-list {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .music-list th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        .music-list td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .music-list tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .music-list a {
+            color: #3498db;
+            text-decoration: none;
+            transition: all 0.3s;
+            padding: 6px 12px;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+        }
+        
+        .music-list a:hover {
+            color: white;
+            background-color: #3498db;
+        }
+        
+        .music-number {
+            width: 50px;
+            text-align: center;
+            color: #7f8c8d;
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .music-list th, 
+            .music-list td {
+                padding: 10px;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html">Homepage</a>
+            <a href="blog.html">Yue's blog</a>
+            <a href="Music.html" class="active">Yue as a music lover!</a>
+        </div>
+    </nav>
+    
+    <div class="page-content">
+        <div class="container">
+            <header>
+                <h1>Tabs I Made</h1>
+                <p class="header-desc">
+                    Amateur bass player + music producer. I enjoy various music styles and am a devoted Spitz fan. This page is mainly for ear-training purposes, where I transcribe songs I love but can't find tabs for online. Updated irregularly.
+                    <br><br>
+                    Welcome to follow me on Bilibili. I usually cover these songs when I have time!
+                </p>
+                
+                <div class="bilibili-link-container">
+                    <a href="https://space.bilibili.com/7645499?spm_id_from=333.33.0.0" class="bilibili-link" title="Follow me on Bilibili" target="_blank">
+                        <img src="logos/bilibili.png" alt="Bilibili" class="bilibili-logo">
+                    </a>
+                </div>
+            </header>
+            
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search by song name...">
+            </div>
+            
+            <div class="tags-container">
+                <span class="tag active">All</span>
+                <span class="tag">Spitz</span>
+            </div>
+            
+            <table class="music-list">
+                <thead>
+                    <tr>
+                        <th class="music-number">#</th>
+                        <th>Song Name</th>
+                        <th>Artist</th>
+                        <th>Tab Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="music-number">1</td>
+                        <td>ルナルナ (Lunaluna)</td>
+                        <td>Spitz</td>
+                        <td><a href="musictabs/lunaluna.html" target="_blank">View Tab</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <footer>
+                <p>© 2025 My Music World - All Rights Reserved</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search functionality
+            const searchBox = document.querySelector('.search-box');
+            const tableRows = document.querySelectorAll('.music-list tbody tr');
+            
+            searchBox.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                tableRows.forEach(row => {
+                    const songName = row.cells[1].textContent.toLowerCase();
+                    
+                    if (songName.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Tag filtering
+            const tags = document.querySelectorAll('.tag');
+            
+            tags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    // Remove active class from all tags
+                    tags.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tag
+                    this.classList.add('active');
+                    
+                    const tagText = this.textContent;
+                    
+                    if (tagText === 'All') {
+                        // Show all rows
+                        tableRows.forEach(row => {
+                            row.style.display = '';
+                        });
+                    } else {
+                        // Filter rows by artist
+                        tableRows.forEach(row => {
+                            const artist = row.cells[2].textContent;
+                            
+                            if (artist === tagText) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
