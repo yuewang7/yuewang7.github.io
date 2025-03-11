@@ -537,6 +537,107 @@ body {
     padding: 0 10px;
 }
 
+    /* Figma作品集样式 */
+    .figma-portfolio-section {
+        padding: 40px 0;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .figma-portfolio-section h2 {
+        font-size: 32px;
+        color: #353866;
+        text-align: center;
+        margin-bottom: 40px;
+        font-weight: 600;
+    }
+    
+    /* 标题链接样式 */
+    .section-title-link {
+        color: #353866;
+        text-decoration: none;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+    
+    .section-title-link:hover {
+        color: #4a69bd;
+    }
+    
+    .section-title-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 0;
+        background-color: #4a69bd;
+        transition: width 0.3s ease;
+    }
+    
+    .section-title-link:hover::after {
+        width: 100%;
+    }
+    
+    .portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 30px;
+    }
+    
+    .portfolio-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .portfolio-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .portfolio-image {
+        height: 220px;
+        overflow: hidden;
+    }
+    
+    .portfolio-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .portfolio-card:hover .portfolio-image img {
+        transform: scale(1.05);
+    }
+    
+    .portfolio-content {
+        padding: 25px;
+    }
+    
+    .portfolio-content h3 {
+        font-size: 22px;
+        color: #353866;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+    
+    .portfolio-content p {
+        color: #666;
+        line-height: 1.6;
+        font-size: 16px;
+    }
+    
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .portfolio-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
 /* 响应式设计 */
 @media (max-width: 768px) {
     .blog-container {
